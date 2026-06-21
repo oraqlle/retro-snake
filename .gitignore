@@ -6,6 +6,7 @@ build/
 cmake-build-*/
 prefix/
 .clangd
+.cache/
 CMakeLists.txt.user
 compile_commands.json
 CMakeFiles/*
