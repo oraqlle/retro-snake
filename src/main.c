@@ -5,7 +5,7 @@
 // Global Constants
 #define CELL_W 30 //< px
 #define CELL_H 30 //< px
-#define CELL_GAP 5 //< px
+#define CELL_GAP 2 //< px
 
 #define GRID_W 30 //< cell
 #define GRID_H 30 //< cell
@@ -13,13 +13,16 @@
 
 const int TARGET_FPS = 60;
 
-const int SIDE_PANEL_W = 60; //< px
+const int SIDE_PANEL_W = 500; //< px
 const int SIDE_PANEL_H = (GRID_H * CELL_H); //< px
 
-const int SCREEN_W = (GRID_W * CELL_W) + SIDE_PANEL_W; //< px
+const int BOARD_W = GRID_W * CELL_W;
+const int BOARD_H = SIDE_PANEL_H;
+
+const int SCREEN_W = BOARD_W + SIDE_PANEL_W; //< px
 const int SCREEN_H = SIDE_PANEL_H; //< px
 
-const Color BACKGROUND_COLOUR = { .r = 245, .g = 245, .b = 245, .a = 255 };
+const Color BACKGROUND_COLOUR = { .r = 172, .g = 182, .b = 7, .a = 255 };
 
 const float SNAKE_CELL_W = CELL_W - CELL_GAP - CELL_GAP;
 const float SNAKE_CELL_H = CELL_H - CELL_GAP - CELL_GAP;
@@ -82,11 +85,23 @@ void draw_snake(Snake *snake) {
     }
 }
 
+void draw_game_panel(void) {
+    Rectangle board = { .x = 5, .y = 5, .width = BOARD_W - 10, .height = BOARD_H - 10 };
+    DrawRectangleLinesEx(board, 10, BLACK);
+}
+
+void draw_side_panel(void) {
+    Rectangle board = { .x = BOARD_W, .y = 5, .width = SIDE_PANEL_W - 5, .height = SIDE_PANEL_H - 10 };
+    DrawRectangleLinesEx(board, 10, BLACK);
+}
+
 void input(void) {}
 
 void update(float delta) { delta = delta * 2; }
 
 void draw(void) {
+    draw_game_panel();
+    draw_side_panel();
     draw_snake(&snake);
 }
 
