@@ -4,7 +4,7 @@ project(
     snake
     VERSION 0.1.0
     DESCRIPTION "snake in raylib"
-    LANGUAGES C
+    LANGUAGES CXX
 )
 
 # ---- Global Defines ----
@@ -29,8 +29,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
-add_executable(snake src/main.c)
-target_compile_features(snake PRIVATE c_std_11)
+add_executable(snake src/main.cpp)
+target_compile_features(snake PRIVATE cxx_std_20)
 target_link_libraries(snake PRIVATE raylib)
 
 if (MSVC)
@@ -43,7 +43,7 @@ endif()
 
 # Checks if OSX and links appropriate frameworks (only required on MacOS)
 if (APPLE)
-    target_link_libraries(snake "-framework IOKit")
-    target_link_libraries(snake "-framework Cocoa")
-    target_link_libraries(snake "-framework OpenGL")
+    target_link_libraries(snake PRIVATE "-framework IOKit")
+    target_link_libraries(snake PRIVATE "-framework Cocoa")
+    target_link_libraries(snake PRIVATE "-framework OpenGL")
 endif()
