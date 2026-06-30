@@ -14,20 +14,23 @@
 
 const int TARGET_FPS = 60;
 
-const int SIDE_PANEL_W = 500;               //< px
-const int SIDE_PANEL_H = (GRID_H * CELL_H); //< px
+const int BOARD_MARGIN = 20; //< px gap between the border and the play grid
 
-const int BOARD_W = GRID_W * CELL_W;
-const int BOARD_H = SIDE_PANEL_H;
+const int SIDE_PANEL_W = 500; //< px
+
+const int BOARD_W = GRID_W * CELL_W + 2 * BOARD_MARGIN;
+const int BOARD_H = GRID_H * CELL_H + 2 * BOARD_MARGIN;
+
+const int SIDE_PANEL_H = BOARD_H; //< px
 
 const int SCREEN_W = BOARD_W + SIDE_PANEL_W; //< px
-const int SCREEN_H = SIDE_PANEL_H;           //< px
+const int SCREEN_H = BOARD_H;                //< px
 
 const Color BACKGROUND_COLOUR = {.r = 172, .g = 182, .b = 7, .a = 255};
 
 const float SNAKE_CELL_W = CELL_W - CELL_GAP - CELL_GAP;
 const float SNAKE_CELL_H = CELL_H - CELL_GAP - CELL_GAP;
-const float SNAKE_CELL_OFFSET = CELL_W + CELL_GAP;
+const float SNAKE_CELL_OFFSET = BOARD_MARGIN;
 
 // Types
 typedef struct {
