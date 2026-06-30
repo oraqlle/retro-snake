@@ -49,6 +49,34 @@ typedef struct {
 } Snake;
 
 Snake snake;
+Vector2i food;
+
+bool is_on_snake(Snake *snake, int x, int y) {
+    for (unsigned idx = 0; idx < snake->length; idx++) {
+        if (snake->positions[idx].x == x && snake->positions[idx].y ==y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void spawn_food(void) {
+    do {
+        food.x = GetRandomValue(0, GRID_W - 1);
+        food.y = GetRandomValue(0, GRID_H - 1);
+    } while (
+        is_on_snake(&snake, food.x, food.y)
+    );
+}
+
+void draw_food(void) {
+    float screen_x = food.x * CELL_W + SNAKE_CELL_OFFSET;
+    float screen_y = food.y * CELL_H + SNAKE_CELL_OFFSET;
+ Rectangle rect = {
+            .x = screen_x, .y = screen_y, .width = SNAKE_CELL_W, .height = SNAKE_CELL_H};
+    DrawRectangleRec(rect, RED);
+    
+}
 
 Snake *init_snake(Snake *snake) {
     if (snake == NULL) {
@@ -88,6 +116,7 @@ void update_snake(Snake *snake, float delta) {
 
     if (time_since_move >= 0.15f) {
 
+        Vector2i old_tail = snake->positions[snake->length - 1];
         time_since_move = 0.0f;
 
         for (unsigned idx = snake->length - 1; idx > 0; idx--) {
@@ -109,6 +138,12 @@ void update_snake(Snake *snake, float delta) {
             case RIGHT:
                 snake->positions[0].x += 1;
                 break;
+        }
+
+        if (snake->positions[0].x == food.x && snake->positions[0].y == food.y) {
+            snake->positions[snake->length] = old_tail;
+            snake->length += 1;
+            spawn_food();
         }
     }
 }
@@ -149,6 +184,7 @@ void draw(void) {
     draw_game_panel();
     draw_side_panel();
     draw_snake(&snake);
+    draw_food();
 }
 
 int main(void) {
@@ -156,6 +192,7 @@ int main(void) {
     SetTargetFPS(TARGET_FPS);
 
     init_snake(&snake);
+    spawn_food();
 
     while (!WindowShouldClose()) {
         float delta = GetFrameTime();
