@@ -86,7 +86,7 @@ static float time_since_move = 0.0f;
 void update_snake(Snake *snake, float delta) {
     time_since_move += delta;
 
-    if (time_since_move >= 0.5f) {
+    if (time_since_move >= 0.15f) {
 
         time_since_move = 0.0f;
 
@@ -124,7 +124,24 @@ void draw_side_panel(void) {
     DrawRectangleLinesEx(board, 10, BLACK);
 }
 
-void input(void) {}
+void input(void) {
+    //UP
+    if ((IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)) && snake.dir != DOWN) {
+        snake.dir = UP;
+    }
+    //DOWN
+    else if((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)) && snake.dir != UP) {
+        snake.dir = DOWN;
+    }
+    //LEFT
+    else if((IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) && snake.dir != RIGHT) {
+        snake.dir = LEFT;
+    }
+    //RIGHT
+    else if((IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) && snake.dir != LEFT) {
+        snake.dir = RIGHT;
+    }
+}
 
 void update(float delta) { update_snake(&snake, delta); }
 
