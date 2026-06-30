@@ -1,5 +1,6 @@
-#include <raylib.h>
+#include "timer.h"
 
+#include <raylib.h>
 #include <stdio.h>
 
 // Global Constants
@@ -81,13 +82,13 @@ void draw_snake(Snake *snake) {
     }
 }
 
-static float time = 0.0f;
+static float time_since_move = 0.0f;
 void update_snake(Snake *snake, float delta) {
-    time += delta;
+    time_since_move += delta;
 
-    if (time >= 0.5f) {
+    if (time_since_move >= 0.5f) {
 
-        time = 0.0f;
+        time_since_move = 0.0f;
 
         for (unsigned idx = snake->length - 1; idx > 0; idx--) {
             Vector2i nxt_pos = snake->positions[idx - 1];
@@ -143,10 +144,14 @@ int main(void) {
         float delta = GetFrameTime();
 
         input();
+
+        Timer t;
         update(delta);
+        double update_ms = t.elapsed_ms();
 
         BeginDrawing();
         ClearBackground(BACKGROUND_COLOUR);
+        DrawText(TextFormat("update: %.3f ms", update_ms), BOARD_W + 20, 40, 20, BLACK);
         DrawFPS(0, 0);
         draw();
         EndDrawing();
